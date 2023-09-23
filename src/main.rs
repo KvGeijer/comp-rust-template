@@ -1,3 +1,5 @@
+extern crate comp_template;
+
 #[allow(unused_imports)]
 use comp_template::parsing::CompIterParser;
 
