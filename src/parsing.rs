@@ -8,6 +8,9 @@ pub trait CompIterParser {
     /// Parses the next item as a unsigned int
     fn read_uint(&mut self) -> usize;
 
+    /// Parses the next item as a float
+    fn read_float(&mut self) -> f64;
+
     // TODO: How to make this generic over the tuple size?
     /// Parses the next item as two signed ints
     fn read_2ints(&mut self) -> (i64, i64);
@@ -15,11 +18,17 @@ pub trait CompIterParser {
     /// Parses the next item as two unsigned ints
     fn read_2uints(&mut self) -> (usize, usize);
 
+    /// Parses the next item as two floats
+    fn read_2floats(&mut self) -> (f64, f64);
+
     /// Parses the next item as a vec of signed ints
     fn read_ints(&mut self) -> Vec<i64>;
 
     /// Parses the next item as a vec of unsigned ints
     fn read_uints(&mut self) -> Vec<usize>;
+
+    /// Parses the next item as a vec of unsigned ints
+    fn read_floats(&mut self) -> Vec<f64>;
 
     /// Parses the next `n` lines as signed ints
     fn read_int_lines(&mut self, n: usize) -> Vec<i64>;
@@ -27,11 +36,17 @@ pub trait CompIterParser {
     /// Parses the next `n` lines as unsigned ints
     fn read_uint_lines(&mut self, n: usize) -> Vec<usize>;
 
+    /// Parses the next `n` lines as unsigned ints
+    fn read_float_lines(&mut self, n: usize) -> Vec<f64>;
+
     /// Parses the next `n` lines as vecs of signed ints
     fn read_int_mat(&mut self, n: usize) -> Vec<Vec<i64>>;
 
     /// Parses the next `n` lines as vecs of unsigned ints
     fn read_uint_mat(&mut self, n: usize) -> Vec<Vec<usize>>;
+
+    /// Parses the next `n` lines as vecs of unsigned ints
+    fn read_float_mat(&mut self, n: usize) -> Vec<Vec<f64>>;
 }
 
 fn read_parsed<F: FromStr, T: Iterator<Item = String>>(iter: &mut T) -> F
@@ -129,6 +144,26 @@ impl<T: Iterator<Item = String>> CompIterParser for T {
     }
 
     fn read_uint_mat(&mut self, n: usize) -> Vec<Vec<usize>> {
+        read_parsed_mat(self, n)
+    }
+
+    fn read_float(&mut self) -> f64 {
+        read_parsed(self)
+    }
+
+    fn read_2floats(&mut self) -> (f64, f64) {
+        read_2parsed(self)
+    }
+
+    fn read_floats(&mut self) -> Vec<f64> {
+        read_split_parsed(self)
+    }
+
+    fn read_float_lines(&mut self, n: usize) -> Vec<f64> {
+        read_parsed_lines(self, n)
+    }
+
+    fn read_float_mat(&mut self, n: usize) -> Vec<Vec<f64>> {
         read_parsed_mat(self, n)
     }
 }
